@@ -52,6 +52,22 @@ app.get('/game/:id', (req, res) =>{
     }
 })
 
+app.post('/game', (req, res) =>{
+    let {title, year, price} = req.body
+
+    if(isNaN(price) || isNaN(year) || title == undefined){
+        res.sendStatus(400)
+    }else{
+        DB.games.push({
+            id: 100,
+            title,
+            year,
+            price
+        })
+        res.sendStatus(200)
+    }
+})
+
 
 app.listen(45678, ()=>{
     console.log('API Rodando')
