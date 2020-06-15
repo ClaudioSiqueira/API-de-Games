@@ -6,12 +6,51 @@
     <title>Loja de Games</title>
 </head>
 <body>
-    
+    <h4>Listando Jogos</h4>
+    <ul id="games"> 
+
+    </ul>
+
+    <hr>
+    <h4>Cadastrar novo Jogo</h4>
+    <input type="text" placeholder="Título" name="title" id="title"><br><br>
+    <input type="number" placeholder="Ano" name="year" id="year"><br><br>
+    <input type="number" placeholder="Preço" name="price" id="price"><br><br>
+    <button onclick="criarJogo()">Criar</button>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+
+
+    function criarJogo(){
+        let title = document.getElementById('title').value
+        let year = document.getElementById('year').value
+        let price = document.getElementById('price').value
+
+        game = {
+            title: title,
+            year: year,
+            price: price
+        }
+        axios.post('http://localhost:45678/game', game).then(response =>{
+            if(response.status == 200){
+                alert('Jogo criado')
+            }
+        }).catch(err =>{
+            alert(err)
+        })
+    }
+
     axios.get('http://localhost:45678/games').then(response =>{
-        console.log(response)
+        let games = response.data
+        let lista = document.getElementById('games')
+
+        games.forEach(game => {
+            let item = document.createElement('li')
+            item.innerText = `${game.id} - ${game.title} - R$${game.price} `
+            lista.appendChild(item)
+        });
     }).catch(err =>{
          console.log(err)
     })
